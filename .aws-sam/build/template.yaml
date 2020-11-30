@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Description: |
+  msa_lab
+  Sample SAM Template for msa_lab
+Globals:
+  Function:
+    Timeout: 3
+    Environment:
+      Variables:
+        OrderTable: !<!Ref> orderTable
+        PaymentTable: !<!Ref> PaymentTable
+        OrderQueue: !<!Ref> OrderQueue
+Resources:
+  OrderQueue:
+    Type: 'AWS::SQS::Queue'
+  PaymentFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: PaymentFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /payment
+            Method: get
+  PaymentEventHandlerFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: A lambda function which handle event of member.
+      Runtime: nodejs12.x
+      CodeUri: PaymentEventHandlerFunction
+      Handler: app.eventHandler
+      Events:
+        SQSQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !<!GetAtt> OrderQueue.Arn
+      MemorySize: 256
+      Timeout: 25
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonSQSFullAccess
+        - DynamoDBCrudPolicy:
+            TableName: !<!Ref> PaymentTable
+  OrderFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: OrderFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 256
+      Timeout: 100
+      Description: Sample Application Order Doamin
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonSQSFullAccess
+        - DynamoDBCrudPolicy:
+            TableName: !<!Ref> orderTable
+      Events:
+        ListMemberApi:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: GET
+        CreateMemberApi:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: POST
+  orderTable:
+    Type: 'AWS::Serverless::SimpleTable'
+    Properties:
+      PrimaryKey:
+        Name: PK
+        Type: String
+      TableName: MSA_ORDER
+  PaymentTable:
+    Type: 'AWS::Serverless::SimpleTable'
+    Properties:
+      PrimaryKey:
+        Name: PK
+        Type: String
+      TableName: MSA_PAYMENT
+Outputs:
+  MSALabApi:
+    Description: API Gateway endpoint URL for Prod stage for OrderController World function
+    Value: !<!Sub> >-
+      https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  OrderFunction:
+    Description: Order Lambda Function ARN
+    Value: !<!GetAtt> OrderFunction.Arn
+  OrderFunctionIamRole:
+    Description: Implicit IAM Role created for OrderController World function
+    Value: !<!GetAtt> OrderFunctionRole.Arn
+  PaymentFunction:
+    Description: Payment Lambda Function ARN
+    Value: !<!GetAtt> PaymentFunction.Arn
+  PaymentFunctionIamRole:
+    Description: Implicit IAM Role created for OrderController World function
+    Value: !<!GetAtt> PaymentFunctionRole.Arn
+  OrderQueue:
+    Description: Order Queue
+    Value: !<!GetAtt> OrderQueue.Arn

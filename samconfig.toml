@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "msa-lab"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-165uo40l9lng9"
+s3_prefix = "msa-lab"
+region = "ap-northeast-2"
+profile = "tandem6-administrator"
+capabilities = "CAPABILITY_IAM"
