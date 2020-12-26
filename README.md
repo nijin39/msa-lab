@@ -13,20 +13,21 @@
  현재 이 어플리케이션은 Typscript/Webpack이용해서 작성되었습니다. 현재 Lambda는 nodejs를 지원하지만 바로 typescript를 지원하고 있지는 않습니다. 실제 사용해 볼 경우, sam 빌드는 사용하는 것보다 webpack을 사용하는 것이 훨씬 최적화된 상태로 빌드하는 것을 볼 수 있습니다.
 또한, Event Sorucing/Event Driven Development를 보여드리기 위해 SQS/API Gateway를 사용하고 있습니다.come.html)
 
-## Deploy the sample application
+## Deploy the application
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
 
-To use the SAM CLI, you need the following tools.
+ 서버리스 애플리케이션을 효율적으로 구현하기 위해서 AWS SAM CLI를 사용했습니다. 이 CLI를 이용하면 Lambda를 로컬에서도 쉽게 테스트 해볼 수 있습니다. 이 CLI를 이용하기 위해서는 아래와 같은 패키들이 준비가 되어 있어야 합니다. DDB의 경우도 로컬에서 같이 확인할 수 있습니다.
+
+AWS SAM CLI를 사용하기 위해서 미리 설치되어 있어야 하는 패키지들
 
 * SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 * Node.js - [Install Node.js 10](https://nodejs.org/en/), including the NPM package management tool.
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
-To build and deploy your application for the first time, run the following in your shell:
+이 어플리케이션을 빌드하고 배포하기 위해서는 아래와 같은 내용을 입력하시면 됩니다.
 
 ```bash
-sam build
+npm run build
 sam deploy --guided
 ```
 
