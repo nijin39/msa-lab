@@ -1,21 +1,17 @@
 # msa_lab
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+이 프로젝트는 AWS SAM 및 기타 Serverless 관련 서비스들을 사용하여 MSA를 구성하는데 있어서 도움을 주고자 만들어진 프로젝트 입니다. 현재는 아래와 같인 폴더 구조로 되어 있습니다. 
 
-- hello-world - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
-- hello-world/tests - Unit tests for the application code. 
-- template.yaml - A template that defines the application's AWS resources.
+- src/order - 주문에 대한 function
+- src/payment - 결제에 대한 function 
+- events - 로컬에서 테스트를 수행하기 위한 event json을 모아놓은 폴더
+- src/test - 단위 테스르를 수행하는 폴더 모음.
+- template.yaml - 인프라에 대해서 정의하는 cloudformation
+- tsconfig.json - Typescript 사용을 위한 환경 설정
+- webpack.config.js - webpack 사용을 위한 환경 설정
 
-The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
-
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.  
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
-
-* [PyCharm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [IntelliJ](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
-* [Visual Studio](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/welcome.html)
+ 현재 이 어플리케이션은 Typscript/Webpack이용해서 작성되었습니다. 현재 Lambda는 nodejs를 지원하지만 바로 typescript를 지원하고 있지는 않습니다. 실제 사용해 볼 경우, sam 빌드는 사용하는 것보다 webpack을 사용하는 것이 훨씬 최적화된 상태로 빌드하는 것을 볼 수 있습니다.
+또한, Event Sorucing/Event Driven Development를 보여드리기 위해 SQS/API Gateway를 사용하고 있습니다.come.html)
 
 ## Deploy the sample application
 
