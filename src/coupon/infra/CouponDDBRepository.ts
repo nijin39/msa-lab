@@ -10,8 +10,8 @@ import {v4 as uuid} from 'uuid';
 const serviceConfigOptions: ServiceConfigurationOptions = {
     region: 'ap-northeast-2',
     endpoint: 'http://dynamodb-local:8000',
-    accessKeyId: 'yrvtp',
-    secretAccessKey: '2u6jyg'
+    accessKeyId: 'ox5c2xh',
+    secretAccessKey: 'qpae9v'
 };
 AWS.config.update(serviceConfigOptions);
 

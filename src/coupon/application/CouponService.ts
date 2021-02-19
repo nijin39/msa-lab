@@ -4,11 +4,13 @@ import CouponDDBRepository from "../infra/CouponDDBRepository";
 import Coupon from "../domain/Coupon";
 import CouponManager from "../domain/CouponManager";
 import IssuedCouponDDBRepository from "../infra/IssuedCouponDDBRepository";
+import IssuedCouponRepository from "../domain/IssuedCouponRepository";
+import IssuedCoupon from "../domain/IssuedCoupon";
 
 class CouponService {
     private static instance: CouponService;
     private couponRepository: CouponRepository;
-    private issueCouponRepository: IssuedCouponDDBRepository;
+    private issueCouponRepository: IssuedCouponRepository;
     private couponManager: CouponManager;
 
     private constructor() {
@@ -43,10 +45,11 @@ class CouponService {
         return await this.couponRepository.save(coupon);
     }
 
-    async usedCouponList(couponId: string): Promise<Coupon> {
-        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
-        coupon.useCoupon();
-        return await this.couponRepository.save(coupon);
+    async usedCouponList(memberNo: string, couponId:string): Promise<Coupon> {
+        const issuedCoupon:IssuedCoupon = await this.issueCouponRepository.findByCouponIdAndMemberNo(memberNo, couponId);
+        issuedCoupon.usedCoupon();
+        console.log( "Issue :", JSON.stringify(issuedCoupon) );
+        return await this.issueCouponRepository.save(issuedCoupon);
     }
 
     async findValidCouponList(memberNo: string): Promise<Array<Coupon>> {
@@ -78,6 +81,13 @@ class CouponService {
         const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
         coupon.deactivateCoupon();
         await this.couponRepository.save(Object.assign(new Coupon, coupon));
+    }
+
+    async useCoupon(memberNo:string, couponId: string) {
+        const issuedCoupon:IssuedCoupon = await this.issueCouponRepository.findByCouponIdAndMemberNo(memberNo, couponId);
+        issuedCoupon.usedCoupon();
+        console.log( "Issue :", JSON.stringify(issuedCoupon) );
+        return await this.issueCouponRepository.save(issuedCoupon);
     }
 }
 

@@ -17,6 +17,8 @@ exports.handler = async (event: AppSyncEvent) => {
             return await couponController.findByCouponId(event);
         case "usedCouponList":
             return await couponController.usedCouponList(event);
+        case "usedCoupon":
+            return await couponController.useCoupon(event);
         case "returnedCoupon":
             return await couponController.returnedCoupon(event);
         case "findUsedCouponList":

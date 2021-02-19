@@ -12,8 +12,8 @@ import IssuedCoupon from "../domain/IssuedCoupon";
 const serviceConfigOptions: ServiceConfigurationOptions = {
     region: 'ap-northeast-2',
     endpoint: 'http://dynamodb-local:8000',
-    accessKeyId: 'yrvtp',
-    secretAccessKey: '2u6jyg'
+    accessKeyId: 'ox5c2xh',
+    secretAccessKey: 'qpae9v'
 };
 AWS.config.update(serviceConfigOptions);
 
@@ -35,20 +35,27 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
 
     async save(issuedCoupon: IssuedCoupon) {
         try {
-
             const params = {
                 TableName: 'Coupon',
                 Item: issuedCoupon
             };
-
-            console.log("ICoupon :", JSON.stringify(params));
-
             const result = await dynamoDbClient.put(params).promise();
-            console.log("Result :", JSON.stringify(result));
             return result;
         } catch (e) {
             console.error( e.message );
         }
+    }
+
+    async findByCouponIdAndMemberNo(memberNo: string, couponId: string): Promise<IssuedCoupon> {
+        const params = {
+            TableName: 'Coupon',
+            Key:{
+                'PK': 'MemberNo#'+memberNo,
+                'SK': couponId
+            }
+        };
+        const result = await dynamoDbClient.get(params).promise();
+        return Promise.resolve( Object.assign( new IssuedCoupon, result.Item) );
     }
 }
 

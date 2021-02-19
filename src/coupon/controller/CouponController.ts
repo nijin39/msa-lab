@@ -41,7 +41,8 @@ class CouponController {
 
   async usedCouponList(event: AppSyncEvent) {
     const couponId = event.arguments.info.couponId;
-    return await this.couponService.usedCouponList(couponId);
+    const memberNo = event.arguments.memberNo;
+    return await this.couponService.usedCouponList(memberNo, couponId);
   }
 
   async findMyCouponList(event: AppSyncEvent) {
@@ -66,6 +67,13 @@ class CouponController {
   async issuedCoupon(event: AppSyncEvent): Promise<Array<Coupon>> {
     const memberNo = event.arguments.issueInfo.memberNo;
     return await this.couponService.issuedCoupon(memberNo);
+  }
+
+  async useCoupon(event: AppSyncEvent) {
+    const couponId = event.arguments.info.couponId;
+    const memberNo = event.arguments.memberNo;
+
+    return await this.couponService.useCoupon(memberNo, couponId);
   }
 }
 
