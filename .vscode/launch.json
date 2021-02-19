@@ -17,6 +17,21 @@
       "sourceMaps": true
     },
     {
+      "name": "CouponFunction",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "${workspaceRoot}/.aws-sam/build/CouponFunction",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "${workspaceRoot}/.aws-sam/build/CouponFunction/app.js"
+      ],
+      "sourceMaps": true
+    },
+    {
       "name": "PaymentEventHandlerFunction",
       "type": "node",
       "request": "attach",

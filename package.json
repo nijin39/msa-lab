@@ -16,6 +16,7 @@
     "dist-js": "^0.3.0",
     "dotenv": "^8.2.0",
     "esprima": "^4.0.1",
+    "moment": "^2.29.1",
     "source-map-support": "^0.5.19",
     "yarn": "^1.22.10"
   },

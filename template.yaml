@@ -33,6 +33,17 @@ Resources:
             Path: /payment
             Method: get
 
+  CouponFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/coupon
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CouponTable
+
   PaymentEventHandlerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -97,6 +108,25 @@ Resources:
         Name: PK
         Type: String
       TableName: MSA_PAYMENT
+
+  CouponTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "Coupon_${Stage}"
+      # BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "PK"
+          AttributeType: "S"
+        - AttributeName: "SK"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "PK"
+          KeyType: HASH
+        - AttributeName: "SK"
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 
 Outputs:
   MSALabApi:
