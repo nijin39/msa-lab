@@ -66,7 +66,7 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
             IndexName: "IssuedCoupon",
             KeyConditionExpression: "#70970 = :70970",
             ExpressionAttributeValues: {
-                ":70970": "3a59675d-b7fb-42ab-ad8d-9e36bec1fb8f"
+                ":70970": issuanceId
             },
             ExpressionAttributeNames: {
                 "#70970": "issuanceId"
@@ -104,7 +104,7 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
             ConsistentRead: false,
             KeyConditionExpression: "#cd420 = :cd420 And begins_with(#cd421, :cd421)",
             ExpressionAttributeValues: {
-                ":cd420": "MemberNo#jngkim",
+                ":cd420": "MemberNo#"+memberNo,
                 ":cd421": "CouponId"
             },
             ExpressionAttributeNames: {

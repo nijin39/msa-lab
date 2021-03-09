@@ -43,7 +43,8 @@ class CouponDDBRepository implements CouponRepository {
                 registDate: moment().toISOString(),
                 couponName: couponInfo.couponName,
                 couponNo: couponNo,
-                couponTarget: couponTargetInfo
+                couponTarget: couponTargetInfo,
+                status: false
             }
         };
 
