@@ -13,6 +13,7 @@ export type AppSyncEvent = {
             couponName: string,
             couponStartDate: string,
             couponEndDate: string,
+            couponType: 'cart' | 'class'
             issuanceId: string
         },
         "issueInfo" : {

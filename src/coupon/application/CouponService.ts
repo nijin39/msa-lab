@@ -59,7 +59,10 @@ class CouponService {
     async issuedCoupon(memberNo: string) {
         const coupons:Array<Coupon> = await this.couponRepository.findValidCouponList(memberNo);
         const vaildCoupon = await coupons.filter(this.filterAllMember(memberNo));
-        await this.couponManager.issuedCoupon(coupons, memberNo, this.issueCouponRepository);
+        await Promise.all(
+            vaildCoupon.map(async (coupon:Coupon) => {
+                await this.couponManager.issuedCoupon(coupon, memberNo, this.issueCouponRepository);
+            }));
         return vaildCoupon;
     }
 

@@ -6,4 +6,5 @@ export interface CouponTarget {
 
 export interface CouponInfo {
  couponName: string
+ couponType: 'cart' | 'class'
 }

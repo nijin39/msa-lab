@@ -44,6 +44,7 @@ class CouponDDBRepository implements CouponRepository {
                 couponName: couponInfo.couponName,
                 couponNo: couponNo,
                 couponTarget: couponTargetInfo,
+                couponType: couponInfo.couponType,
                 status: false
             }
         };
@@ -75,13 +76,19 @@ class CouponDDBRepository implements CouponRepository {
     async findValidCouponList(memberNo: string): Promise<Coupon[]> {
 
         const params = {
-            TableName: 'Coupon',
-            IndexName: 'CouponInfo',
-            KeyConditionExpression: 'SK = :sk',
+            TableName: "Coupon",
+            IndexName: "CouponInfo",
+            KeyConditionExpression: "#2ea90 = :2ea90",
+            FilterExpression: "#2ea91 = :2ea91",
             ExpressionAttributeValues: {
-                ':sk': 'COUPONINFO'
+                ":2ea90": "COUPONINFO",
+                ":2ea91": true
+            },
+            ExpressionAttributeNames: {
+                "#2ea90": "SK",
+                "#2ea91": "status"
             }
-        };
+        }
 
         const result = await dynamoDbClient.query(params).promise();
 
