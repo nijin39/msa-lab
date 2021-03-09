@@ -1,13 +1,8 @@
 {
   "arguments": {
-    "target" : {
-      "memberNo":"ALL",
-      "classId":"ALL",
-      "categoryId":"ALL"
-    },
-    "info" : {
-      "couponName": "전체멤버",
-      "couponId": "07d47e7f-6ee7-4d1d-bea2-f3aa7078dc4d"
+    "info": {
+      "couponId": "07d47e7f-6ee7-4d1d-bea2-f3aa7078dc4d",
+      "issuanceId" : "fb155046-eb6c-4076-b31c-9e5a6ff583b5"
     },
     "memberNo": "jngkim"
   },

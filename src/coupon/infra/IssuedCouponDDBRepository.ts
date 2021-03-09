@@ -58,6 +58,44 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
         const result = await dynamoDbClient.get(params).promise();
         return Promise.resolve( Object.assign( new IssuedCoupon, result.Item) );
     }
+
+    async findByIssueCouponId(issuanceId: string): Promise<IssuedCoupon[]> {
+
+        const params = {
+            TableName: "Coupon",
+            IndexName: "IssuedCoupon",
+            KeyConditionExpression: "#70970 = :70970",
+            ExpressionAttributeValues: {
+                ":70970": "3a59675d-b7fb-42ab-ad8d-9e36bec1fb8f"
+            },
+            ExpressionAttributeNames: {
+                "#70970": "issuanceId"
+            }
+        }
+
+        const result = await dynamoDbClient.query(params).promise();
+
+        return result.Items as IssuedCoupon[]
+    }
+
+    async findByIssuanceId(issuanceId: string): Promise<IssuedCoupon> {
+        const params = {
+            TableName: "Coupon",
+            IndexName: "IssuedCoupon",
+            KeyConditionExpression: "#70970 = :70970",
+            ExpressionAttributeValues: {
+                ":70970": "3a59675d-b7fb-42ab-ad8d-9e36bec1fb8f"
+            },
+            ExpressionAttributeNames: {
+                "#70970": "issuanceId"
+            }
+        }
+
+        const results = await dynamoDbClient.query(params).promise();
+
+        const result = results.Items as IssuedCoupon[]
+        return result[0];
+    }
 }
 
 export default IssuedCouponDDBRepository;

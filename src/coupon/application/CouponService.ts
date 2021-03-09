@@ -35,22 +35,18 @@ class CouponService {
         return await this.couponRepository.findUsedCouponList(memberNo);
     }
 
-    async findByCouponId(memberNo: string, couponId: string): Promise<Coupon> {
-        return await this.couponRepository.findCouponById(memberNo, couponId);
+    async returnedCoupon(issuanceId:string): Promise<IssuedCoupon> {
+        const issuedCoupons:IssuedCoupon[] = await this.issueCouponRepository.findByIssueCouponId(issuanceId);
+        const issuanceCoupon = Object.assign( new IssuedCoupon , issuedCoupons[0] );
+        issuanceCoupon.returnedCoupon() ;
+        return await this.issueCouponRepository.save(issuanceCoupon);
     }
 
-    async returnedCoupon(memberNo: string, couponId: string): Promise<Coupon> {
-        const coupon:Coupon = await this.couponRepository.findCouponById(memberNo, couponId);
-        console.log("Coupon :", JSON.stringify(coupon));
-        coupon.returnedCoupon();
-        return await this.couponRepository.save(coupon);
-    }
-
-    async usedCouponList(memberNo: string, couponId:string): Promise<Coupon> {
-        const issuedCoupon:IssuedCoupon = await this.issueCouponRepository.findByCouponIdAndMemberNo(memberNo, couponId);
-        issuedCoupon.usedCoupon();
-        console.log( "Issue :", JSON.stringify(issuedCoupon) );
-        return await this.issueCouponRepository.save(issuedCoupon);
+    async usedCouponList(issuanceId:string): Promise<IssuedCoupon> {
+        const issuedCoupons:IssuedCoupon[] = await this.issueCouponRepository.findByIssueCouponId(issuanceId);
+        const issuanceCoupon = Object.assign( new IssuedCoupon , issuedCoupons[0] );
+        issuanceCoupon.usedCoupon() ;
+        return await this.issueCouponRepository.save(issuanceCoupon);
     }
 
     async findValidCouponList(memberNo: string): Promise<Array<Coupon>> {
@@ -65,6 +61,10 @@ class CouponService {
         const vaildCoupon = await coupons.filter(this.filterAllMember(memberNo));
         await this.couponManager.issuedCoupon(coupons, memberNo, this.issueCouponRepository);
         return vaildCoupon;
+    }
+
+    async findByIssuanceId(issuanceId: string) {
+        return await this.issueCouponRepository.findByIssuanceId(issuanceId);
     }
 
     private filterAllMember = memberNo => (coupon:Coupon, index, array) =>
@@ -91,6 +91,7 @@ class CouponService {
         console.log( "Issue :", JSON.stringify(issuedCoupon) );
         return await this.issueCouponRepository.save(issuedCoupon);
     }
+
 }
 
 export default CouponService;

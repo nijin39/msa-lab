@@ -70,8 +70,8 @@
       "field2"
     ],
     "selectionSetGraphQL": "{\n  id\n  field1\n  field2\n}",
-    "parentTypeName": "Mutation",
-    "fieldName": "returnedCoupon",
+    "parentTypeName": "Query",
+    "fieldName": "findByIssuanceId",
     "variables": {}
   },
   "stash": {}

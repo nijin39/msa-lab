@@ -12,18 +12,22 @@ class IssuedCoupon {
         this.SK = SK;
         this.issuanceId = issuanceId;
         this.useCoupon = false;
-    }
+    };
 
     get getPK(): string | undefined {
         return this.PK;
-    }
+    };
 
     public setTimeStamp() {
         this.registDate =  moment().toISOString();
+    };
+
+    usedCoupon() {
+        this.useCoupon = true;
     }
 
-    public usedCoupon() {
-        this.useCoupon = true;
+    returnedCoupon() {
+        this.useCoupon = false;
     }
 }
 

@@ -13,12 +13,10 @@ exports.handler = async (event: AppSyncEvent) => {
             return await couponController.findValidCouponList(event);
         case "findMyCouponList":
             return await couponController.findMyCouponList(event);
-        case "findByCouponId":
-            return await couponController.findByCouponId(event);
-        case "usedCouponList":
-            return await couponController.usedCouponList(event);
+        case "findByIssuanceId":
+            return await couponController.findByIssuanceId(event);
         case "usedCoupon":
-            return await couponController.useCoupon(event);
+            return await couponController.usedCoupon(event);
         case "returnedCoupon":
             return await couponController.returnedCoupon(event);
         case "findUsedCouponList":

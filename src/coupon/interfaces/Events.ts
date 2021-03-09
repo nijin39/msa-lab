@@ -12,7 +12,8 @@ export type AppSyncEvent = {
             couponId: string
             couponName: string,
             couponStartDate: string,
-            couponEndDate: string
+            couponEndDate: string,
+            issuanceId: string
         },
         "issueInfo" : {
             "memberNo": "jngkim"

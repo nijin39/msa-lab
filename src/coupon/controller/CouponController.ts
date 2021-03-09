@@ -39,6 +39,7 @@ class CouponController {
     return await this.couponService.findUsedCouponList(memberNo);
   }
 
+  // 이름을 포함한 쿠폰을 발행한다.
   async issuedCoupon(event: AppSyncEvent): Promise<Array<Coupon>> {
     const memberNo = event.arguments.issueInfo.memberNo;
     return await this.couponService.issuedCoupon(memberNo);
@@ -46,25 +47,24 @@ class CouponController {
 
   //특정 계정에게 할당된 쿠폰을 사용 안함 처리함.
   async returnedCoupon(event: AppSyncEvent) {
-    const couponId = event.arguments.info.couponId;
-    const memberNo = event.arguments.memberNo;
-    return await this.couponService.returnedCoupon(memberNo, couponId);
+    const issuanceId = event.arguments.info.issuanceId;
+    return await this.couponService.returnedCoupon(issuanceId);
   }
 
-  async usedCouponList(event: AppSyncEvent) {
-    const couponId = event.arguments.info.couponId;
-    const memberNo = event.arguments.memberNo;
-    return await this.couponService.usedCouponList(memberNo, couponId);
+  //특정 계정에게 할당된 쿠폰을 반환 처리함.
+  async usedCoupon(event: AppSyncEvent) {
+    const issuanceId = event.arguments.info.issuanceId;
+    return await this.couponService.usedCouponList(issuanceId);
+  }
+
+  //쿠폰 발행 ID로 쿠폰 조회하기
+  async findByIssuanceId(event: AppSyncEvent) {
+    const issuanceId = event.arguments.info.issuanceId;
+    return await this.couponService.findByIssuanceId(issuanceId);
   }
 
   async findMyCouponList(event: AppSyncEvent) {
     throw new Error("Method not implemented.");
-  }
-
-  async findByCouponId(event: AppSyncEvent) {
-    const couponId = event.arguments.info.couponId;
-    const memberNo = event.arguments.memberNo;
-    return await this.couponService.findByCouponId(memberNo, couponId);
   }
   
   // async activatedCoupon(event: AppSyncEvent) {
@@ -76,13 +76,6 @@ class CouponController {
   //   const couponId = event.arguments.info.couponId;
   //   return await this.couponService.deactivatedCoupon(couponId);
   // }
-
-  async useCoupon(event: AppSyncEvent) {
-    const couponId = event.arguments.info.couponId;
-    const memberNo = event.arguments.memberNo;
-
-    return await this.couponService.useCoupon(memberNo, couponId);
-  }
 }
 
 export default CouponController;
