@@ -91,20 +91,25 @@ class CouponDDBRepository implements CouponRepository {
         return Promise.resolve(false);
     }
 
-    async findCouponById(memberNo: string, couponId: string): Promise<Coupon> {
+    async findCouponById(couponId: string): Promise<Coupon> {
+
         const params = {
             TableName: "Coupon",
-            Key: {
-                "PK": "MemberNo#"+memberNo,
-                "SK": couponId
+            KeyConditionExpression: "#cd420 = :cd420 And #cd421 = :cd421",
+            ExpressionAttributeValues: {
+                ":cd420": "COUPON#"+couponId,
+                ":cd421": "COUPONINFO"
+            },
+            ExpressionAttributeNames: {
+                "#cd420": "PK",
+                "#cd421": "SK"
             }
         }
 
-        console.log("Params :", JSON.stringify(params));
-        const result = await dynamoDbClient.get(params).promise();
+        const result = await dynamoDbClient.query(params).promise();
 
-        console.log("Result :", JSON.stringify(result));
-        return Promise.resolve(Object.assign(new Coupon(), result.Item));
+        const results = result.Items as Coupon[];
+        return results[0];
     }
 
     async save(coupon: Coupon) {
@@ -113,7 +118,8 @@ class CouponDDBRepository implements CouponRepository {
             Item: coupon
         };
 
-        return await dynamoDbClient.put(params).promise();
+        const result = await dynamoDbClient.put(params).promise();
+        return result;
     }
 }
 

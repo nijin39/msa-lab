@@ -1,6 +1,7 @@
 import { AppSyncEvent } from "../interfaces/Events";
 import CouponService from "../application/CouponService";
 import Coupon from "../domain/Coupon";
+import IssuedCoupon from "../domain/IssuedCoupon";
 
 class CouponController {
   private static instance: CouponController;
@@ -33,7 +34,7 @@ class CouponController {
     return await this.couponService.findValidCouponList(memberNo);
   }
 
-  //해당 ID 기준으로 사용된 쿠폰 검색
+  // 해당 ID 기준으로 사용된 쿠폰 검색
   async findUsedCouponList(event: AppSyncEvent) {
     const memberNo = event.arguments.memberNo;
     return await this.couponService.findUsedCouponList(memberNo);
@@ -45,37 +46,41 @@ class CouponController {
     return await this.couponService.issuedCoupon(memberNo);
   }
 
-  //특정 계정에게 할당된 쿠폰을 사용 안함 처리함.
+  // 특정 계정에게 할당된 쿠폰을 사용 안함 처리함.
   async returnedCoupon(event: AppSyncEvent) {
     const issuanceId = event.arguments.info.issuanceId;
     return await this.couponService.returnedCoupon(issuanceId);
   }
 
-  //특정 계정에게 할당된 쿠폰을 반환 처리함.
+  // 특정 계정에게 할당된 쿠폰을 반환 처리함.
   async usedCoupon(event: AppSyncEvent) {
     const issuanceId = event.arguments.info.issuanceId;
     return await this.couponService.usedCouponList(issuanceId);
   }
 
-  //쿠폰 발행 ID로 쿠폰 조회하기
+  // 쿠폰 발행 ID로 쿠폰 조회하기
   async findByIssuanceId(event: AppSyncEvent) {
     const issuanceId = event.arguments.info.issuanceId;
     return await this.couponService.findByIssuanceId(issuanceId);
   }
 
-  async findMyCouponList(event: AppSyncEvent) {
-    throw new Error("Method not implemented.");
+  // 나에게 할당된 쿠폰 리스트
+  async findMyCouponList(event: AppSyncEvent):Promise<IssuedCoupon[]> {
+    const memberNo = event.arguments.memberNo;
+    return this.couponService.findMyCouponList(memberNo);
   }
-  
-  // async activatedCoupon(event: AppSyncEvent) {
-  //   const couponId = event.arguments.info.couponId;
-  //   return await this.couponService.activatedCoupon(couponId);
-  // }
-  //
-  // async deactivatedCoupon(event: AppSyncEvent) {
-  //   const couponId = event.arguments.info.couponId;
-  //   return await this.couponService.deactivatedCoupon(couponId);
-  // }
+
+  // 쿠폰 활성화
+  async activatedCoupon(event: AppSyncEvent) {
+    const couponId = event.arguments.info.couponId;
+    return await this.couponService.activatedCoupon(couponId);
+  }
+
+  // 쿠폰 비활성
+  async deactivatedCoupon(event: AppSyncEvent) {
+    const couponId = event.arguments.info.couponId;
+    return await this.couponService.deactivatedCoupon(couponId);
+  }
 }
 
 export default CouponController;

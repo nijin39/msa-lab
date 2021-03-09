@@ -67,23 +67,29 @@ class CouponService {
         return await this.issueCouponRepository.findByIssuanceId(issuanceId);
     }
 
+    async findMyCouponList(memberNo):Promise<IssuedCoupon[]> {
+        return await this.issueCouponRepository.findMyCouponList(memberNo);
+    }
+
     private filterAllMember = memberNo => (coupon:Coupon, index, array) =>
     {
         const createdCoupon = Object.assign( new Coupon, coupon);
         return createdCoupon.checkAllMemberCoupon(memberNo);
     }
 
-    // async activatedCoupon(couponId: string) {
-    //     const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
-    //     coupon.activateCoupon();
-    //     await this.couponRepository.save(Object.assign(new Coupon, coupon));
-    // }
-    //
-    // async deactivatedCoupon(couponId: string) {
-    //     const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
-    //     coupon.deactivateCoupon();
-    //     await this.couponRepository.save(Object.assign(new Coupon, coupon));
-    // }
+    async activatedCoupon(couponId: string) {
+        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
+        const foundCoupon = Object.assign( new Coupon, coupon);
+        foundCoupon.activateCoupon();
+        return await this.couponRepository.save(foundCoupon);
+    }
+
+    async deactivatedCoupon(couponId: string) {
+        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
+        const foundCoupon = Object.assign( new Coupon, coupon);
+        foundCoupon.deactivateCoupon();
+        return await this.couponRepository.save(foundCoupon);
+    }
 
     async useCoupon(memberNo:string, couponId: string) {
         const issuedCoupon:IssuedCoupon = await this.issueCouponRepository.findByCouponIdAndMemberNo(memberNo, couponId);
@@ -91,7 +97,6 @@ class CouponService {
         console.log( "Issue :", JSON.stringify(issuedCoupon) );
         return await this.issueCouponRepository.save(issuedCoupon);
     }
-
 }
 
 export default CouponService;

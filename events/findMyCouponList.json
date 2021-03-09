@@ -66,7 +66,7 @@
       "field2"
     ],
     "selectionSetGraphQL": "{\n  id\n  field1\n  field2\n}",
-    "parentTypeName": "Mutation",
+    "parentTypeName": "Query",
     "fieldName": "findMyCouponList",
     "variables": {}
   },

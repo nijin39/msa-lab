@@ -96,6 +96,27 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
         const result = results.Items as IssuedCoupon[]
         return result[0];
     }
+
+    async findMyCouponList(memberNo): Promise<IssuedCoupon[]> {
+        const params = {
+            TableName: "Coupon",
+            ScanIndexForward: false,
+            ConsistentRead: false,
+            KeyConditionExpression: "#cd420 = :cd420 And begins_with(#cd421, :cd421)",
+            ExpressionAttributeValues: {
+                ":cd420": "MemberNo#jngkim",
+                ":cd421": "CouponId"
+            },
+            ExpressionAttributeNames: {
+                "#cd420": "PK",
+                "#cd421": "SK"
+            }
+        }
+
+        const results = await dynamoDbClient.query(params).promise();
+
+        return results.Items as IssuedCoupon[];
+    }
 }
 
 export default IssuedCouponDDBRepository;
