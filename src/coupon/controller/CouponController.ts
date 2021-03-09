@@ -48,12 +48,14 @@ class CouponController {
 
   // 특정 계정에게 할당된 쿠폰을 사용 안함 처리함.
   async returnedCoupon(event: AppSyncEvent) {
+    // TODO memberNo을 받아서 기존의 쿠폰 발행정보와 비교해서 유효성을 확인하고 사용처리한다.
     const issuanceId = event.arguments.info.issuanceId;
     return await this.couponService.returnedCoupon(issuanceId);
   }
 
   // 특정 계정에게 할당된 쿠폰을 반환 처리함.
   async usedCoupon(event: AppSyncEvent) {
+    // TODO memberNo/금액을 받아서 기존의 쿠폰 발행정보와 비교해서 유효성을 확인하고 사용처리한다.
     const issuanceId = event.arguments.info.issuanceId;
     return await this.couponService.usedCouponList(issuanceId);
   }

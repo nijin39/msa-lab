@@ -102,14 +102,17 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
             TableName: "Coupon",
             ScanIndexForward: false,
             ConsistentRead: false,
-            KeyConditionExpression: "#cd420 = :cd420 And begins_with(#cd421, :cd421)",
+            KeyConditionExpression: "#651d0 = :651d0 And begins_with(#651d1, :651d1)",
+            FilterExpression: "#651d2 = :651d2",
             ExpressionAttributeValues: {
-                ":cd420": "MemberNo#"+memberNo,
-                ":cd421": "CouponId"
+                ":651d0": "MemberNo#"+memberNo,
+                ":651d1": "CouponId",
+                ":651d2": false
             },
             ExpressionAttributeNames: {
-                "#cd420": "PK",
-                "#cd421": "SK"
+                "#651d0": "PK",
+                "#651d1": "SK",
+                "#651d2": "useCoupon"
             }
         }
 
