@@ -35,12 +35,13 @@ class CouponService {
         return await this.couponRepository.findUsedCouponList(memberNo);
     }
 
-    async findByCouponId(couponId: string): Promise<Coupon> {
-        return await this.couponRepository.findCouponById(couponId);
+    async findByCouponId(memberNo: string, couponId: string): Promise<Coupon> {
+        return await this.couponRepository.findCouponById(memberNo, couponId);
     }
 
-    async returnedCoupon(couponId: string): Promise<Coupon> {
-        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
+    async returnedCoupon(memberNo: string, couponId: string): Promise<Coupon> {
+        const coupon:Coupon = await this.couponRepository.findCouponById(memberNo, couponId);
+        console.log("Coupon :", JSON.stringify(coupon));
         coupon.returnedCoupon();
         return await this.couponRepository.save(coupon);
     }
@@ -54,6 +55,7 @@ class CouponService {
 
     async findValidCouponList(memberNo: string): Promise<Array<Coupon>> {
         const coupons:Array<Coupon> = await this.couponRepository.findValidCouponList(memberNo);
+        console.log("Coupons :", JSON.stringify(coupons));
         const vaildCoupon = coupons.filter(this.filterAllMember(memberNo));
         return vaildCoupon;
     }
@@ -71,17 +73,17 @@ class CouponService {
         return createdCoupon.checkAllMemberCoupon(memberNo);
     }
 
-    async activatedCoupon(couponId: string) {
-        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
-        coupon.activateCoupon();
-        await this.couponRepository.save(Object.assign(new Coupon, coupon));
-    }
-
-    async deactivatedCoupon(couponId: string) {
-        const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
-        coupon.deactivateCoupon();
-        await this.couponRepository.save(Object.assign(new Coupon, coupon));
-    }
+    // async activatedCoupon(couponId: string) {
+    //     const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
+    //     coupon.activateCoupon();
+    //     await this.couponRepository.save(Object.assign(new Coupon, coupon));
+    // }
+    //
+    // async deactivatedCoupon(couponId: string) {
+    //     const coupon:Coupon = await this.couponRepository.findCouponById(couponId);
+    //     coupon.deactivateCoupon();
+    //     await this.couponRepository.save(Object.assign(new Coupon, coupon));
+    // }
 
     async useCoupon(memberNo:string, couponId: string) {
         const issuedCoupon:IssuedCoupon = await this.issueCouponRepository.findByCouponIdAndMemberNo(memberNo, couponId);

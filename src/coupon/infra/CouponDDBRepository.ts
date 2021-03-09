@@ -3,7 +3,7 @@ import {CouponInfo, CouponTarget} from "../interfaces/CouponTarget";
 import Coupon from "../domain/Coupon";
 
 import * as AWS from 'aws-sdk';
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
+import {ServiceConfigurationOptions} from 'aws-sdk/lib/service';
 import moment from 'moment';
 import {v4 as uuid} from 'uuid';
 
@@ -51,11 +51,28 @@ class CouponDDBRepository implements CouponRepository {
         return Promise.resolve(true);
     }
 
-    findUsedCouponList(memberNo: string): Promise<Array<Coupon>> {
-        return Promise.resolve(new Array<Coupon>());
+    async findUsedCouponList(memberNo: string): Promise<Array<Coupon>> {
+        const params = {
+            TableName: "Coupon",
+            KeyConditionExpression: "#74f00 = :74f00",
+            FilterExpression: "#74f01 = :74f01",
+            ExpressionAttributeValues: {
+                ":74f00": "MemberNo#jngkim",
+                ":74f01": true
+            },
+            ExpressionAttributeNames: {
+                "#74f00": "PK",
+                "#74f01": "useCoupon"
+            }
+        }
+
+        const result = await dynamoDbClient.query(params).promise();
+
+        return result.Items as Coupon[];
     }
 
     async findValidCouponList(memberNo: string): Promise<Coupon[]> {
+
         const params = {
             TableName: 'Coupon',
             IndexName: 'CouponInfo',
@@ -66,6 +83,7 @@ class CouponDDBRepository implements CouponRepository {
         };
 
         const result = await dynamoDbClient.query(params).promise();
+
         return result.Items as Coupon[];
     }
 
@@ -73,16 +91,20 @@ class CouponDDBRepository implements CouponRepository {
         return Promise.resolve(false);
     }
 
-    async findCouponById(couponId: string): Promise<Coupon> {
+    async findCouponById(memberNo: string, couponId: string): Promise<Coupon> {
         const params = {
-            TableName: 'Coupon',
-            Key:{
-                'PK': couponId,
-                'SK': 'COUPONINFO'
+            TableName: "Coupon",
+            Key: {
+                "PK": "MemberNo#"+memberNo,
+                "SK": couponId
             }
-        };
+        }
+
+        console.log("Params :", JSON.stringify(params));
         const result = await dynamoDbClient.get(params).promise();
-        return Promise.resolve( Object.assign( new Coupon(), result.Item) );
+
+        console.log("Result :", JSON.stringify(result));
+        return Promise.resolve(Object.assign(new Coupon(), result.Item));
     }
 
     async save(coupon: Coupon) {

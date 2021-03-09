@@ -1,6 +1,9 @@
 {
   "arguments": {
-    "id": "my identifier"
+    "info": {
+      "couponId": "07d47e7f-6ee7-4d1d-bea2-f3aa7078dc4d"
+    },
+    "memberNo": "jngkim"
   },
   "identity": {
     "claims": {

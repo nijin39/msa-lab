@@ -9,7 +9,7 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 50
     Environment:
       Variables:
         OrderTable: !Ref orderTable

@@ -5,7 +5,7 @@ Description: |
   Sample SAM Template for msa_lab
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 50
     Environment:
       Variables:
         OrderTable: !<!Ref> orderTable

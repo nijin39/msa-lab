@@ -51,9 +51,10 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
             TableName: 'Coupon',
             Key:{
                 'PK': 'MemberNo#'+memberNo,
-                'SK': couponId
+                'SK': 'CouponId#'+couponId
             }
         };
+
         const result = await dynamoDbClient.get(params).promise();
         return Promise.resolve( Object.assign( new IssuedCoupon, result.Item) );
     }

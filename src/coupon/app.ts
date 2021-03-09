@@ -23,10 +23,10 @@ exports.handler = async (event: AppSyncEvent) => {
             return await couponController.returnedCoupon(event);
         case "findUsedCouponList":
             return await couponController.findUsedCouponList(event);
-        case "activatedCoupon":
-            return await couponController.activatedCoupon(event);
-        case "deactivatedCoupon":
-            return await couponController.deactivatedCoupon(event);
+        // case "activatedCoupon":
+        //     return await couponController.activatedCoupon(event);
+        // case "deactivatedCoupon":
+        //     return await couponController.deactivatedCoupon(event);
         default:
             return null;
     }
