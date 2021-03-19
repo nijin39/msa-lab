@@ -51,11 +51,74 @@ class IssuedCouponDDBRepository implements IssuedCouponRepository {
             TableName: 'Coupon',
             Key:{
                 'PK': 'MemberNo#'+memberNo,
-                'SK': couponId
+                'SK': 'CouponId#'+couponId
             }
         };
+
         const result = await dynamoDbClient.get(params).promise();
         return Promise.resolve( Object.assign( new IssuedCoupon, result.Item) );
+    }
+
+    async findByIssueCouponId(issuanceId: string): Promise<IssuedCoupon[]> {
+
+        const params = {
+            TableName: "Coupon",
+            IndexName: "IssuedCoupon",
+            KeyConditionExpression: "#70970 = :70970",
+            ExpressionAttributeValues: {
+                ":70970": issuanceId
+            },
+            ExpressionAttributeNames: {
+                "#70970": "issuanceId"
+            }
+        }
+
+        const result = await dynamoDbClient.query(params).promise();
+
+        return result.Items as IssuedCoupon[]
+    }
+
+    async findByIssuanceId(issuanceId: string): Promise<IssuedCoupon> {
+        const params = {
+            TableName: "Coupon",
+            IndexName: "IssuedCoupon",
+            KeyConditionExpression: "#70970 = :70970",
+            ExpressionAttributeValues: {
+                ":70970": "3a59675d-b7fb-42ab-ad8d-9e36bec1fb8f"
+            },
+            ExpressionAttributeNames: {
+                "#70970": "issuanceId"
+            }
+        }
+
+        const results = await dynamoDbClient.query(params).promise();
+
+        const result = results.Items as IssuedCoupon[]
+        return result[0];
+    }
+
+    async findMyCouponList(memberNo): Promise<IssuedCoupon[]> {
+        const params = {
+            TableName: "Coupon",
+            ScanIndexForward: false,
+            ConsistentRead: false,
+            KeyConditionExpression: "#651d0 = :651d0 And begins_with(#651d1, :651d1)",
+            FilterExpression: "#651d2 = :651d2",
+            ExpressionAttributeValues: {
+                ":651d0": "MemberNo#"+memberNo,
+                ":651d1": "CouponId",
+                ":651d2": false
+            },
+            ExpressionAttributeNames: {
+                "#651d0": "PK",
+                "#651d1": "SK",
+                "#651d2": "useCoupon"
+            }
+        }
+
+        const results = await dynamoDbClient.query(params).promise();
+
+        return results.Items as IssuedCoupon[];
     }
 }
 

@@ -4,7 +4,8 @@
       "memberNo":"ALL"
     },
     "info" : {
-      "couponName": "HeeJong Event"
+      "couponName": "HeeJong Event",
+      "couponType": "class"
     }
   },
   "identity": {

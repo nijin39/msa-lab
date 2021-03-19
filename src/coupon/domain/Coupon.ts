@@ -6,6 +6,7 @@ class Coupon {
     private status?:boolean;
     private useDate?:string;
     private couponNo?:string;
+    private couponType?:string;
     private couponTarget?:CouponTarget;
 
     public constructor(PK?:string, SK?:string) {

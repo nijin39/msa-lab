@@ -3,7 +3,7 @@ import {CouponInfo, CouponTarget} from "../interfaces/CouponTarget";
 import Coupon from "../domain/Coupon";
 
 import * as AWS from 'aws-sdk';
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
+import {ServiceConfigurationOptions} from 'aws-sdk/lib/service';
 import moment from 'moment';
 import {v4 as uuid} from 'uuid';
 
@@ -43,7 +43,9 @@ class CouponDDBRepository implements CouponRepository {
                 registDate: moment().toISOString(),
                 couponName: couponInfo.couponName,
                 couponNo: couponNo,
-                couponTarget: couponTargetInfo
+                couponTarget: couponTargetInfo,
+                couponType: couponInfo.couponType,
+                status: false
             }
         };
 
@@ -51,21 +53,45 @@ class CouponDDBRepository implements CouponRepository {
         return Promise.resolve(true);
     }
 
-    findUsedCouponList(memberNo: string): Promise<Array<Coupon>> {
-        return Promise.resolve(new Array<Coupon>());
+    async findUsedCouponList(memberNo: string): Promise<Array<Coupon>> {
+        const params = {
+            TableName: "Coupon",
+            KeyConditionExpression: "#74f00 = :74f00",
+            FilterExpression: "#74f01 = :74f01",
+            ExpressionAttributeValues: {
+                ":74f00": "MemberNo#jngkim",
+                ":74f01": true
+            },
+            ExpressionAttributeNames: {
+                "#74f00": "PK",
+                "#74f01": "useCoupon"
+            }
+        }
+
+        const result = await dynamoDbClient.query(params).promise();
+
+        return result.Items as Coupon[];
     }
 
     async findValidCouponList(memberNo: string): Promise<Coupon[]> {
+
         const params = {
-            TableName: 'Coupon',
-            IndexName: 'CouponInfo',
-            KeyConditionExpression: 'SK = :sk',
+            TableName: "Coupon",
+            IndexName: "CouponInfo",
+            KeyConditionExpression: "#2ea90 = :2ea90",
+            FilterExpression: "#2ea91 = :2ea91",
             ExpressionAttributeValues: {
-                ':sk': 'COUPONINFO'
+                ":2ea90": "COUPONINFO",
+                ":2ea91": true
+            },
+            ExpressionAttributeNames: {
+                "#2ea90": "SK",
+                "#2ea91": "status"
             }
-        };
+        }
 
         const result = await dynamoDbClient.query(params).promise();
+
         return result.Items as Coupon[];
     }
 
@@ -74,15 +100,24 @@ class CouponDDBRepository implements CouponRepository {
     }
 
     async findCouponById(couponId: string): Promise<Coupon> {
+
         const params = {
-            TableName: 'Coupon',
-            Key:{
-                'PK': couponId,
-                'SK': 'COUPONINFO'
+            TableName: "Coupon",
+            KeyConditionExpression: "#cd420 = :cd420 And #cd421 = :cd421",
+            ExpressionAttributeValues: {
+                ":cd420": "COUPON#"+couponId,
+                ":cd421": "COUPONINFO"
+            },
+            ExpressionAttributeNames: {
+                "#cd420": "PK",
+                "#cd421": "SK"
             }
-        };
-        const result = await dynamoDbClient.get(params).promise();
-        return Promise.resolve( Object.assign( new Coupon(), result.Item) );
+        }
+
+        const result = await dynamoDbClient.query(params).promise();
+
+        const results = result.Items as Coupon[];
+        return results[0];
     }
 
     async save(coupon: Coupon) {
@@ -91,7 +126,8 @@ class CouponDDBRepository implements CouponRepository {
             Item: coupon
         };
 
-        return await dynamoDbClient.put(params).promise();
+        const result = await dynamoDbClient.put(params).promise();
+        return result;
     }
 }
 
