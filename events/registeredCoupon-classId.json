@@ -1,13 +1,11 @@
 {
   "arguments": {
     "target" : {
-      "memberNo":"leehee"
+      "memberNo":"jngkim",
+      "classId": "photo"
     },
     "info" : {
-      "couponName": "JONGIL Event"
-    },
-    "issueInfo" : {
-      "memberNo": "jngkim"
+      "couponName": "JONGIL Event 3"
     }
   },
   "identity": {
@@ -75,7 +73,7 @@
     ],
     "selectionSetGraphQL": "{\n  id\n  field1\n  field2\n}",
     "parentTypeName": "Mutation",
-    "fieldName": "issuedCoupon",
+    "fieldName": "registeredCoupon",
     "variables": {}
   },
   "stash": {}
