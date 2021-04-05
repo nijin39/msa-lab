@@ -8,10 +8,12 @@ class Coupon {
     private couponNo?:string;
     private couponType?:string;
     private couponTarget?:CouponTarget;
+    private price?:number;
 
-    public constructor(PK?:string, SK?:string) {
+    public constructor(PK?:string, SK?:string, price?:number) {
         this.PK = PK;
         this.SK = SK;
+        this.price = price;
     }
 
     get getPK(): string | undefined {
@@ -21,6 +23,15 @@ class Coupon {
     get getCouponNo(): string | undefined {
         return this.couponNo;
     }
+
+    get getPrice(): number | undefined {
+        return this.price;
+    }
+
+    get getCoupontype(): string | undefined {
+        return this.couponType;
+    }
+
 
     returnedCoupon() {
         this.status = false;

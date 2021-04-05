@@ -3,6 +3,11 @@ import CouponService from "../application/CouponService";
 import Coupon from "../domain/Coupon";
 import IssuedCoupon from "../domain/IssuedCoupon";
 
+// 번역기 WEB??
+// Anti CL 외부 || 내부의 데이터
+// HTTP / Ggrp / MQTT >>> ACL >>> 내부
+// httpRequest -> service.a(httpReqeust)
+
 class CouponController {
   private static instance: CouponController;
   private couponService: CouponService;

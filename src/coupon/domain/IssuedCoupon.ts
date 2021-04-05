@@ -6,12 +6,16 @@ class IssuedCoupon {
     private registDate?:string;
     private issuanceId?:string;
     private useCoupon:boolean;
+    private price?:number;
+    private couponType?:string;
 
-    public constructor(PK?:string, SK?:string, issuanceId?:string) {
+    public constructor(PK?:string, SK?:string, issuanceId?:string, price?:number, couponType?:string) {
         this.PK = PK;
         this.SK = SK;
         this.issuanceId = issuanceId;
         this.useCoupon = false;
+        this.price = price;
+        this.couponType = couponType;
     };
 
     get getPK(): string | undefined {

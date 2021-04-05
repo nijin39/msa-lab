@@ -56,7 +56,12 @@ class CouponService {
         return vaildCoupon;
     }
 
+    // business 구현하지 않습니다.
+    //
     async issuedCoupon(memberNo: string) {
+        // Business 하시는 분들이 이해할 수 있는 business policy 배치
+        // 상세 구현은 없다. 상세 구현은 Domain Layer 모든 로직은 Domain Layer만 구현되있습니다.
+        // 로직은 응집도 있게 구현되어야 한다. <--- Domain
         const coupons:Array<Coupon> = await this.couponRepository.findValidCouponList(memberNo);
         const vaildCoupon = await coupons.filter(this.filterAllMember(memberNo));
         await Promise.all(

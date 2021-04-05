@@ -15,7 +15,7 @@ class CouponManager {
             const isIssued: IssuedCoupon = await issuedCouponRepository.findByCouponIdAndMemberNo(memberNo, <string>couponItem.getCouponNo)
             // 기존에 발행된 쿠폰이 없을 때.
             if (isIssued.getPK === undefined || isIssued.getPK === null) {
-                const issuedCoupon: IssuedCoupon = new IssuedCoupon("MemberNo#" + memberNo, "CouponId#" + couponItem.getCouponNo, uuid())
+                const issuedCoupon: IssuedCoupon = new IssuedCoupon("MemberNo#" + memberNo, "CouponId#" + couponItem.getCouponNo, uuid(), couponItem.getPrice, couponItem.getCoupontype)
                 issuedCoupon.setTimeStamp();
                 await issuedCouponRepository.save(issuedCoupon);
             } else {
